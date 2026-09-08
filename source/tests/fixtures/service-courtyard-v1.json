@@ -1,0 +1,22 @@
+{
+  "version": "service-courtyard-v1",
+  "seed": "courtyard-golden-v1",
+  "cases": [
+    {
+      "size": "small",
+      "sha256": "b5ef579fa7410e3981ed2d10aa7d8155740323e7da599cc0a5cde55523fbb940"
+    },
+    {
+      "size": "standard",
+      "sha256": "18bd1ea288b73e1427221fd2d56ddc7e3c13ba7684e2097173899a421713f7c6"
+    },
+    {
+      "size": "large",
+      "sha256": "57e8f7541397c9ac9629af2a8d4d39cb60baf5a95861c9e2975623cdb44012f5"
+    },
+    {
+      "size": "massive",
+      "sha256": "b6ed1a993dbdb85c1b230ed6f64ba78c543bb518fe8bef3be69a2501a8d833af"
+    }
+  ]
+}

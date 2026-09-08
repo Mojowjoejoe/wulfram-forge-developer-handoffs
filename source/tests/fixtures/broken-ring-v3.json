@@ -1,0 +1,22 @@
+{
+  "version": "broken-ring-v3",
+  "seed": "broken-ring-golden-v3",
+  "fixtures": [
+    {
+      "size": "small",
+      "sha256": "cf07ec0e0496840c21e3797d730e6f804b4cecf40d41abc9bdb3ed2c4e2613e3"
+    },
+    {
+      "size": "standard",
+      "sha256": "86ec108d3aacd92fbcdf927aaf4d8fecbe7ab98f16f84f08c492793b6d67a54f"
+    },
+    {
+      "size": "large",
+      "sha256": "34e7a09b5bf489377e117ff9389bd9e29633312037f5707eb5f17ef0e3c83ea2"
+    },
+    {
+      "size": "massive",
+      "sha256": "950dd5751d13088393db87f25e2c3c0c4c1836c1c97fb28ce918b848056abc17"
+    }
+  ]
+}

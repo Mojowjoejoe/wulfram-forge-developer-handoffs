@@ -1,0 +1,59 @@
+name: Validate Windows desktop
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-windows-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  desktop:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 9.0.x
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm test
+      - name: Build and inspect unsigned validation package
+        shell: pwsh
+        run: |
+          $version = '0.0.0-ci.' + '${{ github.sha }}'.Substring(0, 12)
+          npm run build:desktop -- --version $version
+          if ($LASTEXITCODE -ne 0) { throw 'Desktop build failed.' }
+          $archive = "dist/desktop/WulframForge-$version-win-x64-self-contained.zip"
+          $extracted = Join-Path $env:RUNNER_TEMP 'forge-package-verification'
+          Expand-Archive -LiteralPath $archive -DestinationPath $extracted
+          $executable = Join-Path $extracted 'WulframForge/WulframForge.exe'
+          if (-not (Test-Path -LiteralPath $executable)) { throw 'Packaged executable is missing.' }
+          $readme = Get-Content -Raw -LiteralPath (Join-Path $extracted 'README.txt')
+          if (-not $readme.Contains('not Authenticode signed')) { throw 'Validation package must disclose unsigned status.' }
+          $signature = Get-AuthenticodeSignature -LiteralPath $executable
+          if ($signature.Status -ne 'NotSigned') { throw "Unexpected validation signature: $($signature.Status)" }
+          $archiveHash = Get-FileHash -LiteralPath $archive -Algorithm SHA256
+          "$($archiveHash.Hash.ToLower())  $([IO.Path]::GetFileName($archive))" |
+            Set-Content -Encoding ascii 'dist/desktop/SHA256SUMS.txt'
+          "Source: ${{ github.sha }}`nSignature: NotSigned`nPurpose: CI package inspection; not a signed release or runtime acceptance test." |
+            Set-Content -Encoding utf8 'dist/desktop/VALIDATION.txt'
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: WulframForge-Windows-validation
+          retention-days: 14
+          if-no-files-found: error
+          path: |
+            dist/desktop/WulframForge-*-win-x64-self-contained.zip
+            dist/desktop/SHA256SUMS.txt
+            dist/desktop/VALIDATION.txt

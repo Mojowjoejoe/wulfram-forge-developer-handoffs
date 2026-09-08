@@ -1,0 +1,35 @@
+# Paired district positions — v26
+
+R6 continuation of district arrangement previews. Independent districts remains the default and retains the v25 random sequence. The new Team policy option **Paired positions (180°)** is explicit and never manufactures missing partner groups.
+
+Each eligible district must contain only Team 1 or only Team 2. It needs exactly one other eligible district with the same token composition and unique matching units at rotationally paired XY positions (within 0.001 world units). Both groups must allow reposition and satisfy the existing lock/shared-membership rules. Missing, fixed, locked or ambiguous partners reject before candidate search. Neutral or mixed-team moving districts reject in this mode.
+
+The first district of each pair gets a seeded shift; its partner gets the opposite shift. Existing headings are retained, and each side uses its own terrain fitting. Counts, teams and fixed building records remain unchanged. Every candidate still passes the v25 bounds, project, authoring and sampled access checks. This is paired XY movement, not a claim that terrain, headings, sightlines, service performance or combat balance are symmetric.
+
+Changing policy cancels and invalidates previous candidates. Choosing independent movement is a user decision; failed pairing does not silently fall back to it. Paired Apply receipts use `districtArrangement.last` version 2 and `teamPolicy: paired-positions`; independent receipts remain version 1. Receipts still require the original map and fitting context for replay, as described in the v25 guide.
+
+Focused tests prove three paired candidates, deterministic replay, equal-and-opposite positions, retained headings, fixed-record and source preservation, and refusal of missing/locked partners. Native acceptance exercises the policy selector, missing-partner explanation without map mutation, then the existing independent preview/Apply/Undo journey. Actual paired candidate generation is source-tested in this sprint; a native paired Apply scenario remains open. Typecheck and scoped lint passed; packaged receipts are pending.
+
+Initial acceptance `outputs/product-baseline-BTRwfE/report.json` stopped at an existing stamp hover assertion after a fixed 500 ms delay. Its failure screenshot and captured UI text (`outputs-desktop-test-5hFOHn/report.json`) show a valid surface and `2679 vertices · click to place` after that assertion. The native test now uses its bounded readiness wait for the same placeable condition. The executable is unchanged; acceptance is being rerun. The initial failed receipt is retained and is not counted as a pass.
+
+## Final evidence
+
+Private build: `dist/desktop/paired-districts-v26/WulframForge.exe`, version `0.7.0-creative.26`; reverified SHA-256 `CF30B45223305E979CEDE76AAAA994FDF9C768988FB9CD6C5EEB50A9C86998AD`.
+
+Acceptance is assembled from separate successful runs against this executable, not a single green aggregate. Source tests (257 passed, one existing fixture skip) and typecheck passed in `outputs/product-baseline-zJK35x`; combined terrain passed in `outputs-desktop-test-2YOfuw/report.json`; creative/native district checks passed in `outputs/creative-native-Xgoz7a/report.json`; random maps passed in `outputs-desktop-test-QFhIWI/report.json`. Visually reviewed `outputs/creative-native-Xgoz7a/paired-district-rejection.png` for the explicit policy, scope explanation and missing-partner recovery message.
+
+The second aggregate failed on a UI-request timeout before paired-policy evidence. A standalone retry (`outputs/creative-native-UtYXBH`) passed the new district checks but later failed because capture_view returned text instead of an image. The next instrumented native run completed; these intermittent UI/capture failures remain a reliability concern, not a proven product fix. Test diagnostics now include the timed-out request and screenshot error payload. All failed receipts are retained. The full roadmap and native paired Apply acceptance remain open.
+
+## Native paired Apply follow-up
+
+`outputs/creative-native-KxZ946/report.json` closes the native paired Apply gap above: a second eligible opposite-team district was authored, preview left the map unchanged, Apply moved four buildings with opposite XY shifts in one undo step, all other entities stayed identical, and Undo restored the previous entities. The test then undid its partner setup and passed the existing independent arrangement workflow. Visually reviewed `paired-district-preview.png` in that folder: policy explanation, candidate dot legend and Apply controls are visible.
+
+This receipt is **not an overall pass**. Later, the creative-style screenshot at test line 475 failed with `Editor request timed out. Re-inspect state before retrying a write.` The MCP client and host both use 30-second deadlines; this evidence alone does not establish whether WebView capture, renderer responsiveness or host dispatch caused the timeout. The native runner now preserves failed capture results and records independent, bounded renderer, DevTools screenshot and editor-host probes without retrying or accepting the failed capture. No product reliability fix is claimed.
+
+The first diagnostic rerun, `outputs/creative-native-2LN8Hg/report.json`, failed earlier at `Page.captureScreenshot` after district alignment. Thus both native MCP capture and DevTools capture have now timed out in separate runs; it is not yet proven to be an MCP-only problem. The runner also now records bounded renderer-state and layout-metrics probes on its general failure path. This test-only instrumentation does not alter the packaged executable or turn failures into passes.
+
+`outputs/creative-native-FXM8NU/report.json` reproduces the DevTools capture timeout while independent probes succeed: the document is complete, the MCP bridge exists, layout metrics are available, and `document.visibilityState` is `hidden`. This points to hidden-page capture as a contributing condition, rather than proving a generally hung renderer. The native runner now calls `Page.bringToFront` and requires visible-page readiness before either screenshot API. This is test setup, not a production capture fix; its acceptance result must be recorded separately.
+
+A subsequent complete native creative suite, `outputs/creative-native-wt39Dw/report.json`, passed, including the new paired Apply/Undo scenario and all later library/style/terrain checks. That process started before the visibility-readiness edit was loaded, so it strengthens paired-feature acceptance but cannot validate the new capture preparation or establish that intermittent failures are fixed.
+
+The visibility-ready runner passed the complete creative native suite in `outputs/creative-native-XCRd8k/report.json`, including paired preview/Apply/Undo, style screenshots and the subsequent terrain trials. Scoped runner lint passed. This is one successful run with explicit page activation and visibility readiness, not proof that production capture works while hidden or that all intermittent capture causes have been eliminated. The v26 executable remains unchanged.

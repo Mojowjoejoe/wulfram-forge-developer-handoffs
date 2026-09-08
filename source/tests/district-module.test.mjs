@@ -1,0 +1,31 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import { createBlankProject, instantiateBaseTemplate } from '../lib/wulfram.ts';
+import { districtModuleFromSelection, moduleDistrictMetadata } from '../lib/district-module.ts';
+import { exportPortableBases, parsePortableBases, mergePersonalBases } from '../lib/portable-base-library.ts';
+import { buildBaseLibrary } from '../lib/base-library.ts';
+const manifest=JSON.parse(await fs.readFile('public/assets/manifest.json'));
+await test('A district roundtrips as its own kind and places on another map with relative spacing and chosen team',()=>{
+  const source=createBlankProject('Source');source.entities=[{id:'a',token:'e',team:1,position:[400,500,10],rotation:[0,0,.4],active:1},{id:'b',token:'r',team:1,position:[600,650,20],rotation:[0,0,.8],active:1}];
+  const before=structuredClone(source), saved=districtModuleFromSelection(source,['a','b'],'Service yard','saved',manifest);
+  assert.equal(saved.kind,'district');assert.deepEqual(saved.template.sourceAnchor,[500,575]);assert.deepEqual(saved.template.units[0].offset,[-100,-75]);
+  const raw=exportPortableBases([saved]);assert.equal(JSON.parse(raw).version,2);assert.deepEqual(parsePortableBases(raw),[saved]);
+  assert.throws(()=>parsePortableBases(JSON.stringify({...JSON.parse(raw),version:1})),/version 2/);
+  assert.equal(mergePersonalBases([saved],[saved]).skipped,1);
+  assert.equal(buildBaseLibrary([], [saved],manifest,'small').find(e=>e.id==='saved').category,'My districts');
+  const destination=createBlankProject('Destination');let i=0;
+  const result=instantiateBaseTemplate(saved.template,destination.terrain,[1000,1000],2,1,Math.PI/2,manifest,undefined,()=>`new-${++i}`);
+  assert.equal(result.entities.length,2);assert.deepEqual(result.entities.map(e=>e.team),[2,2]);
+  assert.ok(Math.abs(Math.hypot(...[0,1].map(a=>result.entities[0].position[a]-result.entities[1].position[a]))-250)<1e-8);
+  assert.deepEqual(JSON.parse(moduleDistrictMetadata(destination,saved.name,result.entities,'placed'))[0].entityIds,['new-1','new-2']);
+  assert.deepEqual(source,before);assert.equal(destination.entities.length,0);
+});
+await test('Modules reject incomplete or mixed-team selections and unsupported kinds',()=>{
+  const source=createBlankProject();source.entities=[{id:'a',token:'e',team:1,position:[10,10,0],rotation:[0,0,0],active:1},{id:'b',token:'e',team:2,position:[20,20,0],rotation:[0,0,0],active:1}];
+  assert.throws(()=>districtModuleFromSelection(source,['a','b'],'Test','id',manifest),/one source team/);
+  assert.throws(()=>districtModuleFromSelection(source,['missing'],'Test','id',manifest),/existing/);
+  const saved=districtModuleFromSelection(source,['a'],'Test','id',manifest);
+  assert.throws(()=>parsePortableBases(JSON.stringify([{...saved,kind:'recipe'}])),/kind/);
+  assert.throws(()=>parsePortableBases(JSON.stringify([{...saved,template:{...saved.template,id:'different'}}])),/IDs must match/);
+});

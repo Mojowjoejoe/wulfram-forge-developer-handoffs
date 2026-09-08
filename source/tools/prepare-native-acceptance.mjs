@@ -1,0 +1,23 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { fileURLToPath } from 'node:url';
+import JSZip from 'jszip';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const destination = path.resolve(root, '../balanced-map-evidence/terrain-first-rc20/native-test-start.zip');
+assert.equal(fs.existsSync(destination), false, 'Preserve existing acceptance fixture');
+const input = fs.readFileSync('C:/Users/Developer/Downloads/test2-balanced-diagnostics.zip');
+const diagnostics = await JSZip.loadAsync(input, { checkCRC32: true });
+const bytes = await diagnostics.file('importable-map.zip').async('nodebuffer');
+const map = await JSZip.loadAsync(bytes, { checkCRC32: true });
+const entry = Object.values(map.files).find(file => file.name.endsWith('/wulfram-project.json'));
+const project = JSON.parse(await entry.async('string'));
+assert.equal(project.entities.length, 0);
+assert.equal(project.metadata['generator.stage'], 'terrain-only-bases-required');
+assert.equal(project.metadata['generator.seed'], 'a2bc3322-3bc1-41d8-908c-01737ec6fb88');
+fs.writeFileSync(destination, bytes, { flag: 'wx' });
+const checksum = createHash('sha256').update(bytes).digest('hex');
+fs.writeFileSync(destination + '.sha256', `${checksum}  native-test-start.zip\n`, { flag: 'wx' });
+console.log(JSON.stringify({ destination, name: project.name, units: project.entities.length, checksum }));

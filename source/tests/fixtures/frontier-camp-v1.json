@@ -1,0 +1,169 @@
+{
+  "seed": "frontier-golden-v1",
+  "cases": [
+    {
+      "size": "small",
+      "version": "frontier-camp-v1",
+      "entitiesHash": "a6fecbee5416ac67a5f2e98c60773d605bd2f72da5f74069c736bc50c5735ab0",
+      "areas": [
+        {
+          "id": "frontier-expansion-1",
+          "name": "Team 1 future expansion strip",
+          "team": "all",
+          "kind": "corridor",
+          "width": 320,
+          "points": [
+            [
+              3230.0973245889086,
+              3995.9637416506184
+            ],
+            [
+              2943.3091064133855,
+              4405.539763795115
+            ]
+          ]
+        },
+        {
+          "id": "frontier-expansion-2",
+          "name": "Team 2 future expansion strip",
+          "team": "all",
+          "kind": "corridor",
+          "width": 320,
+          "points": [
+            [
+              8769.902675411091,
+              4004.036258349382
+            ],
+            [
+              9056.690893586614,
+              3594.460236204886
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "size": "standard",
+      "version": "frontier-camp-v1",
+      "entitiesHash": "52b0d146a89bee76d08bbea58a89a1c3881b59a30f32ca07708580d3d6ddede5",
+      "areas": [
+        {
+          "id": "frontier-expansion-1",
+          "name": "Team 1 future expansion strip",
+          "team": "all",
+          "kind": "corridor",
+          "width": 320,
+          "points": [
+            [
+              3230.0973245889086,
+              3995.9637416506184
+            ],
+            [
+              2943.3091064133855,
+              4405.539763795115
+            ]
+          ]
+        },
+        {
+          "id": "frontier-expansion-2",
+          "name": "Team 2 future expansion strip",
+          "team": "all",
+          "kind": "corridor",
+          "width": 320,
+          "points": [
+            [
+              8769.902675411091,
+              4004.036258349382
+            ],
+            [
+              9056.690893586614,
+              3594.460236204886
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "size": "large",
+      "version": "frontier-camp-v1",
+      "entitiesHash": "5057f3c95c0af53a5012f31870912a774c5578e0a22e9d75e37f5cddb2218c3a",
+      "areas": [
+        {
+          "id": "frontier-expansion-1",
+          "name": "Team 1 future expansion strip",
+          "team": "all",
+          "kind": "corridor",
+          "width": 320,
+          "points": [
+            [
+              3230.0973245889086,
+              3995.9637416506184
+            ],
+            [
+              2943.3091064133855,
+              4405.539763795115
+            ]
+          ]
+        },
+        {
+          "id": "frontier-expansion-2",
+          "name": "Team 2 future expansion strip",
+          "team": "all",
+          "kind": "corridor",
+          "width": 320,
+          "points": [
+            [
+              8769.902675411091,
+              4004.036258349382
+            ],
+            [
+              9056.690893586614,
+              3594.460236204886
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "size": "massive",
+      "version": "frontier-camp-v1",
+      "entitiesHash": "f20dff81a5dc5138eb32d2389c1d318ceb591679431e29a0cc76fce1c582fda0",
+      "areas": [
+        {
+          "id": "frontier-expansion-1",
+          "name": "Team 1 future expansion strip",
+          "team": "all",
+          "kind": "corridor",
+          "width": 320,
+          "points": [
+            [
+              3230.0973245889086,
+              3995.9637416506184
+            ],
+            [
+              2943.3091064133855,
+              4405.539763795115
+            ]
+          ]
+        },
+        {
+          "id": "frontier-expansion-2",
+          "name": "Team 2 future expansion strip",
+          "team": "all",
+          "kind": "corridor",
+          "width": 320,
+          "points": [
+            [
+              8769.902675411091,
+              4004.036258349382
+            ],
+            [
+              9056.690893586614,
+              3594.460236204886
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

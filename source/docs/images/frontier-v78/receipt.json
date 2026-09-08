@@ -1,0 +1,41 @@
+{
+  "nativeReport": "D:/WulframForgeTestRuns/outputs-desktop-test-BNk2Bh/report.json",
+  "sourceReport": "outputs/frontier-visual-v78-reviewed/report.json",
+  "images": [
+    {
+      "file": "large.png",
+      "source": "D:\\Documents\\Wulframe\\wulfram-mapeditor\\outputs\\frontier-visual-v78-reviewed\\large.png",
+      "sha256": "f3df997dccad63837795e4c75750064b5a89b36d6b59e1d011f8fdbe06a0d823"
+    },
+    {
+      "file": "massive.png",
+      "source": "D:\\Documents\\Wulframe\\wulfram-mapeditor\\outputs\\frontier-visual-v78-reviewed\\massive.png",
+      "sha256": "e2029fdad59fac52d74b9a7154cac12b66bd171c6af486877b472dba538b6812"
+    },
+    {
+      "file": "small.png",
+      "source": "D:\\Documents\\Wulframe\\wulfram-mapeditor\\outputs\\frontier-visual-v78-reviewed\\small.png",
+      "sha256": "abd573c55bec314522d5ecf000950f681e5dcd9aaaa43d17c352fcb53b003a29"
+    },
+    {
+      "file": "standard.png",
+      "source": "D:\\Documents\\Wulframe\\wulfram-mapeditor\\outputs\\frontier-visual-v78-reviewed\\standard.png",
+      "sha256": "1d7676c3128fe041cce3111fbc1adb418209756f4fca41e942af2ec983ef7af7"
+    },
+    {
+      "file": "frontier-catalog-overhead.png",
+      "source": "D:\\WulframForgeTestRuns\\outputs-desktop-test-BNk2Bh\\frontier-catalog-overhead.png",
+      "sha256": "e3f8c057daf110a16d98399e8d9c98ec761d638356f85356f42c8f42ed9934d3"
+    },
+    {
+      "file": "frontier-catalog-side.png",
+      "source": "D:\\WulframForgeTestRuns\\outputs-desktop-test-BNk2Bh\\frontier-catalog-side.png",
+      "sha256": "a67412d008d27ef6ef5a3cfd4b1615e2a355ad6558fae6865b95b5c927daceb7"
+    },
+    {
+      "file": "frontier-catalog-service.png",
+      "source": "D:\\WulframForgeTestRuns\\outputs-desktop-test-BNk2Bh\\frontier-catalog-service.png",
+      "sha256": "c8875f08a7269e18be2f23af13b47dc749c27262ab7961a0d025cd0db055f8bc"
+    }
+  ]
+}

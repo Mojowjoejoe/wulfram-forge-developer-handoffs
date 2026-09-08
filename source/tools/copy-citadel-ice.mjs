@@ -1,0 +1,26 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {createMapArchive,readMapArchive} from '../lib/map-package.ts';
+const sourcePath=path.resolve('outputs/canyon-citadel-central-outpost-v3/Canyon-Citadel-Power-Run-v3.zip');
+const out=path.resolve('outputs/canyon-citadel-ice-working-v1');
+const original=await fs.readFile(sourcePath);
+const sha=b=>createHash('sha256').update(b).digest('hex');
+const entries=await readMapArchive(original);
+const source=JSON.parse(entries.find(e=>e.name.endsWith('/wulfram-project.json')).text);
+const project=structuredClone(source);
+project.name='Canyon Citadel — Ice working copy';
+project.metadata['showcase.iceDevelopment']=JSON.stringify({version:'ice-working-v1',stage:'COPY ONLY — ICE TEXTURES AND VALLEYS NOT YET APPLIED',sourceSha256:sha(original)});
+const bytes=Buffer.from(await createMapArchive(project));
+const check=await readMapArchive(bytes);
+const reopened=JSON.parse(check.find(e=>e.name.endsWith('/wulfram-project.json')).text);
+assert.deepEqual(reopened.terrain,source.terrain);
+assert.deepEqual(reopened.entities,source.entities);
+assert.deepEqual(reopened.baseLayouts,source.baseLayouts);
+await fs.mkdir(out); // Refuse overwriting an existing working copy.
+await fs.writeFile(path.join(out,'Canyon-Citadel-Ice-working-v1.zip'),bytes,{flag:'wx'});
+await fs.writeFile(path.join(out,'project.json'),JSON.stringify(project),{flag:'wx'});
+await fs.writeFile(path.join(out,'README.md'),'# Canyon Citadel — Ice working copy\n\nSeparate starting copy of Power Run v3. Terrain, textures, 57 entities and base layouts are unchanged. Ice textures and deeper valleys have NOT been applied yet. Keep all Ice development here; preserve outputs/canyon-citadel-central-outpost-v3.\n\nThe intentionally unpowered neutral repair pad still produces one expected power error. Live pickup, deployment and takeover remain unverified.\n',{flag:'wx'});
+assert.equal(sha(await fs.readFile(sourcePath)),sha(original));
+console.log(JSON.stringify({out,originalUnchanged:true,terrainAndEntitiesIdentical:true}));

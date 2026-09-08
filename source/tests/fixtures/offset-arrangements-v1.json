@@ -1,0 +1,701 @@
+{
+  "seed": "offset-arrangement-golden",
+  "cases": [
+    {
+      "arrangement": "wide-front",
+      "size": "small",
+      "version": "offset-bastion-arrangements-v1:wide-front",
+      "layoutHash": "65b278774639f6e9688e1893a05779a2e28278959a7d33b547ebb22067b94bb1",
+      "areas": [
+        {
+          "id": "offset-bastion-approach-1",
+          "name": "Team 1 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              4200,
+              3650
+            ],
+            [
+              3200,
+              3650
+            ],
+            [
+              3200,
+              4300
+            ],
+            [
+              2250,
+              4300
+            ]
+          ]
+        },
+        {
+          "id": "offset-bastion-approach-2",
+          "name": "Team 2 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              7800,
+              4350
+            ],
+            [
+              8800,
+              4350
+            ],
+            [
+              8800,
+              3700
+            ],
+            [
+              9750,
+              3700
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "arrangement": "wide-front",
+      "size": "standard",
+      "version": "offset-bastion-arrangements-v1:wide-front",
+      "layoutHash": "e1dc0b12ce09eff1a1b13093779c1296b4ad85476a8f9e954da69444a8949eb0",
+      "areas": [
+        {
+          "id": "offset-bastion-approach-1",
+          "name": "Team 1 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              4200,
+              3650
+            ],
+            [
+              3200,
+              3650
+            ],
+            [
+              3200,
+              4300
+            ],
+            [
+              2250,
+              4300
+            ]
+          ]
+        },
+        {
+          "id": "offset-bastion-approach-2",
+          "name": "Team 2 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              7800,
+              4350
+            ],
+            [
+              8800,
+              4350
+            ],
+            [
+              8800,
+              3700
+            ],
+            [
+              9750,
+              3700
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "arrangement": "wide-front",
+      "size": "large",
+      "version": "offset-bastion-arrangements-v1:wide-front",
+      "layoutHash": "69d7b835a96e1a5bbc183b3ffc180568b9831a74bcf10a2ed3687c311b2f0787",
+      "areas": [
+        {
+          "id": "offset-bastion-approach-1",
+          "name": "Team 1 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              4200,
+              3650
+            ],
+            [
+              3200,
+              3650
+            ],
+            [
+              3200,
+              4300
+            ],
+            [
+              2250,
+              4300
+            ]
+          ]
+        },
+        {
+          "id": "offset-bastion-approach-2",
+          "name": "Team 2 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              7800,
+              4350
+            ],
+            [
+              8800,
+              4350
+            ],
+            [
+              8800,
+              3700
+            ],
+            [
+              9750,
+              3700
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "arrangement": "wide-front",
+      "size": "massive",
+      "version": "offset-bastion-arrangements-v1:wide-front",
+      "layoutHash": "6301d0a7b7601b56150f560130b3c447892ec7722789e218d38eef5e4f0a709d",
+      "areas": [
+        {
+          "id": "offset-bastion-approach-1",
+          "name": "Team 1 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              4200,
+              3650
+            ],
+            [
+              3200,
+              3650
+            ],
+            [
+              3200,
+              4300
+            ],
+            [
+              2250,
+              4300
+            ]
+          ]
+        },
+        {
+          "id": "offset-bastion-approach-2",
+          "name": "Team 2 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              7800,
+              4350
+            ],
+            [
+              8800,
+              4350
+            ],
+            [
+              8800,
+              3700
+            ],
+            [
+              9750,
+              3700
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "arrangement": "deep-court",
+      "size": "small",
+      "version": "offset-bastion-arrangements-v1:deep-court",
+      "layoutHash": "de680a68636f955e7ff5780b2cbfa218cbfc149ba991063eaf1c1041f05d4885",
+      "areas": [
+        {
+          "id": "offset-bastion-approach-1",
+          "name": "Team 1 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              4200,
+              4000
+            ],
+            [
+              2900,
+              4000
+            ],
+            [
+              2900,
+              4750
+            ],
+            [
+              2150,
+              4750
+            ]
+          ]
+        },
+        {
+          "id": "offset-bastion-approach-2",
+          "name": "Team 2 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              7800,
+              4000
+            ],
+            [
+              9100,
+              4000
+            ],
+            [
+              9100,
+              3250
+            ],
+            [
+              9850,
+              3250
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "arrangement": "deep-court",
+      "size": "standard",
+      "version": "offset-bastion-arrangements-v1:deep-court",
+      "layoutHash": "b6645c666f358cab4c5155550866627d340182b25c1a7bb2da6a1539ff61e3aa",
+      "areas": [
+        {
+          "id": "offset-bastion-approach-1",
+          "name": "Team 1 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              4200,
+              4000
+            ],
+            [
+              2900,
+              4000
+            ],
+            [
+              2900,
+              4750
+            ],
+            [
+              2150,
+              4750
+            ]
+          ]
+        },
+        {
+          "id": "offset-bastion-approach-2",
+          "name": "Team 2 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              7800,
+              4000
+            ],
+            [
+              9100,
+              4000
+            ],
+            [
+              9100,
+              3250
+            ],
+            [
+              9850,
+              3250
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "arrangement": "deep-court",
+      "size": "large",
+      "version": "offset-bastion-arrangements-v1:deep-court",
+      "layoutHash": "a7be084224a3312a8a65ea9334cc380d2c99a693c3a70566ccf65795388c2e11",
+      "areas": [
+        {
+          "id": "offset-bastion-approach-1",
+          "name": "Team 1 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              4200,
+              4000
+            ],
+            [
+              2900,
+              4000
+            ],
+            [
+              2900,
+              4750
+            ],
+            [
+              2150,
+              4750
+            ]
+          ]
+        },
+        {
+          "id": "offset-bastion-approach-2",
+          "name": "Team 2 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              7800,
+              4000
+            ],
+            [
+              9100,
+              4000
+            ],
+            [
+              9100,
+              3250
+            ],
+            [
+              9850,
+              3250
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "arrangement": "deep-court",
+      "size": "massive",
+      "version": "offset-bastion-arrangements-v1:deep-court",
+      "layoutHash": "e8a2bc15c9f2c42fa9548f914dede1a27dcdcfe34c35005c0402095636b6f40e",
+      "areas": [
+        {
+          "id": "offset-bastion-approach-1",
+          "name": "Team 1 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              4200,
+              4000
+            ],
+            [
+              2900,
+              4000
+            ],
+            [
+              2900,
+              4750
+            ],
+            [
+              2150,
+              4750
+            ]
+          ]
+        },
+        {
+          "id": "offset-bastion-approach-2",
+          "name": "Team 2 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              7800,
+              4000
+            ],
+            [
+              9100,
+              4000
+            ],
+            [
+              9100,
+              3250
+            ],
+            [
+              9850,
+              3250
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "arrangement": "split-wings",
+      "size": "small",
+      "version": "offset-bastion-arrangements-v1:split-wings",
+      "layoutHash": "9c038bab0ec94f93ee05a7cd538b93e3ff5e7a88b74f36c35adac729e73875f8",
+      "areas": [
+        {
+          "id": "offset-bastion-approach-1",
+          "name": "Team 1 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              4200,
+              4200
+            ],
+            [
+              3000,
+              4200
+            ],
+            [
+              3000,
+              3650
+            ],
+            [
+              2150,
+              3650
+            ]
+          ]
+        },
+        {
+          "id": "offset-bastion-approach-2",
+          "name": "Team 2 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              7800,
+              3800
+            ],
+            [
+              9000,
+              3800
+            ],
+            [
+              9000,
+              4350
+            ],
+            [
+              9850,
+              4350
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "arrangement": "split-wings",
+      "size": "standard",
+      "version": "offset-bastion-arrangements-v1:split-wings",
+      "layoutHash": "4b55b693747a9e8061c3dda817963fe43fcf03b967ae0fb832fcfb93166515b2",
+      "areas": [
+        {
+          "id": "offset-bastion-approach-1",
+          "name": "Team 1 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              4200,
+              4200
+            ],
+            [
+              3000,
+              4200
+            ],
+            [
+              3000,
+              3650
+            ],
+            [
+              2150,
+              3650
+            ]
+          ]
+        },
+        {
+          "id": "offset-bastion-approach-2",
+          "name": "Team 2 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              7800,
+              3800
+            ],
+            [
+              9000,
+              3800
+            ],
+            [
+              9000,
+              4350
+            ],
+            [
+              9850,
+              4350
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "arrangement": "split-wings",
+      "size": "large",
+      "version": "offset-bastion-arrangements-v1:split-wings",
+      "layoutHash": "8d26fcb858926b3523558b8d2ec00816ce97fe0a638a66a61b649afac39137b7",
+      "areas": [
+        {
+          "id": "offset-bastion-approach-1",
+          "name": "Team 1 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              4200,
+              4200
+            ],
+            [
+              3000,
+              4200
+            ],
+            [
+              3000,
+              3650
+            ],
+            [
+              2150,
+              3650
+            ]
+          ]
+        },
+        {
+          "id": "offset-bastion-approach-2",
+          "name": "Team 2 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              7800,
+              3800
+            ],
+            [
+              9000,
+              3800
+            ],
+            [
+              9000,
+              4350
+            ],
+            [
+              9850,
+              4350
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "arrangement": "split-wings",
+      "size": "massive",
+      "version": "offset-bastion-arrangements-v1:split-wings",
+      "layoutHash": "7d32be38f9fec348901d8b1cf22a51992d4d23171ae50617064dc6646cb45e93",
+      "areas": [
+        {
+          "id": "offset-bastion-approach-1",
+          "name": "Team 1 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              4200,
+              4200
+            ],
+            [
+              3000,
+              4200
+            ],
+            [
+              3000,
+              3650
+            ],
+            [
+              2150,
+              3650
+            ]
+          ]
+        },
+        {
+          "id": "offset-bastion-approach-2",
+          "name": "Team 2 bent approach",
+          "team": "all",
+          "kind": "corridor",
+          "width": 200,
+          "points": [
+            [
+              7800,
+              3800
+            ],
+            [
+              9000,
+              3800
+            ],
+            [
+              9000,
+              4350
+            ],
+            [
+              9850,
+              4350
+            ]
+          ]
+        }
+      ]
+    }
+  ]
+}

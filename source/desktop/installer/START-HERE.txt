@@ -1,0 +1,19 @@
+WULFRAM FORGE - PRIVATE v109
+
+Open Wulfram Forge from the Start menu, then click Launch editor.
+The installer includes the accepted combined v109 editor and a stable launcher.
+To try another local editor EXE, click Change editor build in the launcher.
+Keep that build available. This launcher does not download updates.
+
+Setup installs for your Windows account. Microsoft WebView2 is installed if
+missing; that prerequisite needs an internet connection. .NET is bundled.
+
+Your maps are saved wherever you choose. Keep maps outside the installation
+folder. Editor preferences and recovery data remain in their existing profile.
+Uninstall removes the installed application and its launcher selection, not
+saved maps or the editor profile. Separately selected editor builds are retained.
+
+This is an unsigned private test installer, not a public release.
+Includes curved lanes, draggable lane handles, shared manual terrain brushes,
+and 21 reviewed creative base families. Game/server and novice acceptance
+remain separate from the verified editor workflows.

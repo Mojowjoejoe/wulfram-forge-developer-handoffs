@@ -1,0 +1,29 @@
+diff --git a/physics/src/terrain.cpp b/physics/src/terrain.cpp
+index f4a523a..da8c1dd 100644
+--- a/physics/src/terrain.cpp
++++ b/physics/src/terrain.cpp
+@@ -69,9 +69,14 @@ TerrainHit TerrainGrid::Evaluate(float x, float y) const noexcept {
+     Vec3f c{};
+     std::int32_t triangle = 0;
+ 
++    // Forge experiment: retain the recovered square-cell path, but choose
++    // triangles using normalized coordinates for rectangular editor cells.
++    const bool squareCells = spacingX_ == spacingY_;
++    const double tx = static_cast<double>(x - x0) / spacingX_;
++    const double ty = static_cast<double>(y - y0) / spacingY_;
+     const std::int32_t parity = ((~ix) ^ iy) & 1;
+     if (parity != 0) {
+-        if ((y - y0) - (x - x0) < 0.0F) {
++        if (squareCells ? (y - y0) - (x - x0) < 0.0F : ty < tx) {
+             a = v00;
+             b = v10;
+             c = v11;
+@@ -81,7 +86,7 @@ TerrainHit TerrainGrid::Evaluate(float x, float y) const noexcept {
+             c = v11;
+             triangle = 1;
+         }
+-    } else if ((y - y0) - (x1 - x) < 0.0F) {
++    } else if (squareCells ? (y - y0) - (x1 - x) < 0.0F : ty < 1.0 - tx) {
+         a = v01;
+         b = v00;
+         c = v10;

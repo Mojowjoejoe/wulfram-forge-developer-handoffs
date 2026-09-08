@@ -1,0 +1,54 @@
+# dependencies
+/node_modules
+/tools/mcp/node_modules/
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/.vinext/
+/out/
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local environment
+.env*
+
+# deployment and generated files
+.vercel
+next-env.d.ts
+*.tsbuildinfo
+/dist/
+/.wrangler/
+/outputs/*
+!/outputs/three-lane-citadel-v1-final/
+/outputs/three-lane-citadel-v1-final/*
+!/outputs/three-lane-citadel-v1-final/project.json
+!/outputs/three-lane-citadel-v1-final/Three-Lane-Citadel-v1.zip
+/outputs-desktop-test-*/
+/work/
+/.dotnet-sdk/
+/desktop/WulframForge/bin/
+/desktop/WulframForge/obj/
+/desktop/WulframForge/wwwroot/
+/desktop/WulframForge/WebAssets.zip
+/desktop/WulframForgeLauncher/bin/
+/desktop/WulframForgeLauncher/obj/
+/desktop/WulframForgeLauncher.Tests/bin/
+/desktop/WulframForgeLauncher.Tests/obj/

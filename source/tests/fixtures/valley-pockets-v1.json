@@ -1,0 +1,22 @@
+{
+  "version": "valley-pockets-v1",
+  "seed": "valley-pocket-reference",
+  "fixtures": [
+    {
+      "size": "small",
+      "sha256": "dd1e2845fe351d1e3d100d41640cb632d911b2feeda92a090bcfa59b2701201c"
+    },
+    {
+      "size": "standard",
+      "sha256": "e512884713ae90683e768ff972813287c0c77dd01043254d346cb99dcbb95604"
+    },
+    {
+      "size": "large",
+      "sha256": "45608deb87673559568541d15f9188e3e5b4627096cd7e1b48cf1028d45c5d5c"
+    },
+    {
+      "size": "massive",
+      "sha256": "763e0ed610a073c8e51ef0ea8f6b2301c9fe42dc30d74c2c2096572443121439"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+# Courtyard native visual matrix
+
+Receipt: tools/mcp/MapEditerMCP/outputs/mcp-native-test-u9UXev/courtyard-visual-matrix-YS8wAf/courtyard-visual-report.json PASS on private v90.1. Twelve hashed source representatives cover small/standard/large/massive with three seeds each. Native import preserves terrain/entities/layouts, and cameras preserve the serialized project snapshot. Each case retains a Team 1 overhead and first repair-pad close view, 24 images total. Synthetic flat maps use original snow texture; original template geometry is unchanged.
+
+Primary review inspected one overhead per size. Independent review inspected six representative images across all sizes and verified all twelve source hashes. Court outlines remain clear; repair close-ups show original models and powered state. Overhead buildings remain small, so controlled diagrams and close views complement the overall native plan. These are representative visual observations, not an assertion that all 24 frames were individually reviewed.
+
+The earlier twelve controlled diagrams and 192-case terrain matrix are separate evidence. Native visual capture is on flat terrain and Team 1; paired Team 2 fortified views are in the restart evidence. No in-game driving or full-family admission is claimed. This step changes test tooling and evidence only, not the executable. Harness lint passes in outputs/courtyard-visual-matrix-lint.log. No publication.

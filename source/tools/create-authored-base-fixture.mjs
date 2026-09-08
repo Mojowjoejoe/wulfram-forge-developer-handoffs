@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import {createBlankProject,activateBaseLayout} from '../lib/wulfram.ts';
+import {createCreativeBaseLayout} from '../lib/builtin-base-layouts.ts';
+const manifest=JSON.parse(fs.readFileSync('public/assets/manifest.json','utf8'));
+const project=createBlankProject('Authored MCP acceptance',65);
+project.terrain.worldWidth=8000;project.terrain.worldHeight=6000;project.terrain.heights.fill(0);
+const layout=createCreativeBaseLayout(project,manifest,'anvil','authored-source','placement-test',{size:'small',x:1800,y:2800,rotation:25,radius:1800,targetCount:18,checkAccess:true});
+layout.metadata['forge.districts.v1']=JSON.stringify([{id:'command',name:'Locked command',entityIds:layout.entities.filter(e=>e.team===1&&e.token==='u').map(e=>e.id),locked:true}]);
+layout.metadata['forge.composition-budgets.v1']=JSON.stringify([{team:1,role:'all',min:18,max:18}]);
+layout.metadata['forge.build-areas.v1']=JSON.stringify([{id:'central-clear',name:'Central reservation',kind:'clear',team:'all',x:3800,y:1000,width:400,height:300}]);
+project.baseLayouts.push(layout);activateBaseLayout(project,layout.id);
+fs.writeFileSync('outputs/authored-mcp-v82-fixture.json',JSON.stringify(project,null,2));

@@ -1,0 +1,29 @@
+{
+  "report": "D:\\WulframForgeTestRuns\\outputs-desktop-test-v9OVv4\\report.json",
+  "executableSha256": "165ccca5e1f93760405a8476e9b1ad062ca81be18c374c1dbe53c76b05c9a53a",
+  "capture": {
+    "state": "applied",
+    "arrangement": "deep-court",
+    "size": "massive",
+    "images": [
+      "catalog-overhead",
+      "catalog-side",
+      "catalog-service"
+    ],
+    "mapPreserved": true
+  },
+  "images": [
+    {
+      "file": "offset-bastion-catalog-overhead.png",
+      "sha256": "7053e4ef335402e6640781481bc2c0b5b31a6dc99e8809f8c76a2aedbb6ff4f5"
+    },
+    {
+      "file": "offset-bastion-catalog-side.png",
+      "sha256": "28ae9ed0d3e7b5c82e2ede2831a5ae2697cecb8bc9f7a5f4f8c4b54588e82586"
+    },
+    {
+      "file": "offset-bastion-catalog-service.png",
+      "sha256": "226f807cc0760fbad74201d36b1908204558ffef9b32c16b70c0f896c1ed475e"
+    }
+  ]
+}

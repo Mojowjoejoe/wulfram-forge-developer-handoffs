@@ -1,0 +1,26 @@
+[
+  {
+    "seed": "valley-pocket-count-reference",
+    "size": "small",
+    "targetCount": 14,
+    "sha256": "fb06d37093d04e544e3a161a1a3c66b6796eea5a1cb98991aeb443378a409c54"
+  },
+  {
+    "seed": "valley-pocket-count-reference",
+    "size": "standard",
+    "targetCount": 19,
+    "sha256": "d7d81b19e5faa4ac88b2757e97c87c553e991244859c1fe4ca151c1eecb71b58"
+  },
+  {
+    "seed": "valley-pocket-count-reference",
+    "size": "large",
+    "targetCount": 24,
+    "sha256": "4902640d3b1a5da2d09fef8444eb604ae71a2e1fe10e5091c3295ba7c307a730"
+  },
+  {
+    "seed": "valley-pocket-count-reference",
+    "size": "massive",
+    "targetCount": 34,
+    "sha256": "423d57f74e2dff8ad0026d546001abad5ef6f9e711867a8845ccf60da621b8a8"
+  }
+]

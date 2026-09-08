@@ -1,0 +1,41 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {instantiatePairedTemplate} from '../lib/paired-template.ts';
+import {synchronizeActiveBaseLayout} from '../lib/wulfram.ts';
+import {analyzeBalancedProject} from '../lib/balanced-map-analysis.ts';
+import {createMapArchive,readMapArchive} from '../lib/map-package.ts';
+
+const out=path.resolve('outputs/canyon-citadel-central-outpost-v3');
+assert.ok(!fs.existsSync(out),'Preserve prior variants');
+const source=JSON.parse(fs.readFileSync('outputs/canyon-citadel-central-outpost-v2/project.json'));
+const project=structuredClone(source);
+const manifest=JSON.parse(fs.readFileSync('public/assets/manifest.json'));
+const identity=JSON.parse(project.metadata['showcase.identity']);
+const template={id:'outpost-starter-power-pack',name:'Outpost starter power cargo',sourceMap:'Canyon Citadel',sourceState:'authored',sourceTeam:1,sourceWorldSize:[6400,6400],sourceAnchor:[0,0],unitCount:1,footprint:{width:30,height:30},units:[{token:'c',subtype:'e',offset:[-300/Math.SQRT2,-300/Math.SQRT2],groundOffset:0,rotation:[0,0,Math.PI/4],active:1}]};
+for(let i=0;i<2;i++) {
+  const placed=instantiatePairedTemplate(template,project.terrain,identity.baseAnchors[i],i+1,1,i*Math.PI,manifest,undefined,()=>`outpost-power-cargo-team-${i+1}`);
+  assert.equal(placed.skippedWithoutModel,0);assert.equal(placed.entities.length,1);
+  project.entities.push(...placed.entities);
+}
+synchronizeActiveBaseLayout(project,project.updatedAt);
+project.name='Canyon Citadel — Power Run';
+project.metadata['showcase.powerCargo']=JSON.stringify({version:'power-run-v1',perTeam:1,token:'c',subtype:'e',location:'Home service court',purpose:'Carry and deploy at neutral center; live pickup and takeover unverified'});
+assert.deepEqual(project.terrain,source.terrain);assert.deepEqual(project.entities.slice(0,55),source.entities);
+for(const team of [1,2])assert.equal(project.entities.filter(e=>e.token==='c'&&e.subtype==='e'&&e.team===team).length,1);
+assert.equal(project.entities.filter(e=>e.token==='e').length,source.entities.filter(e=>e.token==='e').length);
+const analysis=analyzeBalancedProject(project,identity.baseAnchors,identity.objectiveAnchors,{},manifest);
+assert.equal(analysis.terrain.passed,true);assert.equal(analysis.entityPairing.passed,true);
+const errors=analysis.projectIssues.filter(i=>i.severity==='error');
+assert.equal(errors.length,1);assert.equal(errors[0].code,'power');assert.equal(errors[0].entityId,'central-neutral-repair-1');
+const bytes=Buffer.from(await createMapArchive(project));
+const entries=await readMapArchive(bytes);
+const reopened=JSON.parse(entries.find(e=>e.name.endsWith('/wulfram-project.json')).text);
+assert.deepEqual(reopened.entities,JSON.parse(JSON.stringify(project.entities)));assert.deepEqual(reopened.terrain,source.terrain);
+fs.mkdirSync(out,{recursive:true});
+fs.writeFileSync(path.join(out,'Canyon-Citadel-Power-Run-v3.zip'),bytes);
+fs.writeFileSync(path.join(out,'project.json'),JSON.stringify(project));
+fs.writeFileSync(path.join(out,'analysis.json'),JSON.stringify({expectedUnpoweredNeutralError:true,analysis},null,2));
+fs.writeFileSync(path.join(out,'SHA256SUMS.txt'),`${createHash('sha256').update(bytes).digest('hex')}  Canyon-Citadel-Power-Run-v3.zip\n`);
+console.log(JSON.stringify({out,cargo:project.entities.slice(-2),errors}));

@@ -1,0 +1,28 @@
+# Publish only the reviewed source snapshot and public documentation.
+/*
+!/.gitignore
+!/README.md
+!/OVERVIEW.md
+!/PRIVACY_REVIEW.md
+!/source/
+!/physics-experiment/
+# Regenerable or local data must never be staged.
+**/node_modules/
+**/.git/
+**/bin/
+**/obj/
+**/dist/
+**/.dotnet-sdk/
+**/.next/
+**/.vinext/
+**/.wrangler/
+**/runtime/
+**/profile/
+**/profiles/
+**/.env*
+**/*.log
+**/*.tsbuildinfo
+**/*.pfx
+**/*.p12
+**/*.pem
+**/*.key

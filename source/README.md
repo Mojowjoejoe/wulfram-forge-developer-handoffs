@@ -1,0 +1,122 @@
+# Wulfram Forge
+
+Wulfram Forge is an in-browser terrain editor and base builder for Wulfram II maps. It uses the original palette-decoded terrain textures, skies, and shape geometry, reads and writes the original `land`/`state` family of files, and adds a versioned JSON base-layout format for new servers.
+
+Community changes are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for the
+fork, verification, pull-request, administrator-review, and release workflow.
+
+## What works
+
+- Full map lifecycle: new map, import, edit, validate, local save/autosave, undo/redo, and ZIP export.
+- Seeded balanced-map candidate generation with open-field, three-route, and ring-center terrain; exact 180° terrain/team pairing; normal Forge legality checks; independent slope, bounded-anchor, clearance, connected-area, high-ground, objective-access, and separated-route gates; accessible isometric previews; interruptible three-candidate progress; side-by-side comparison; and one-action apply/undo. Passing these offline gates does not replace side-swapped live playtesting. See [the generator contract](docs/BALANCED_MAP_GENERATOR.md) and [corpus calibration](docs/MAP_CORPUS_CALIBRATION.md).
+- Terrain mode with raise, lower, flatten, smooth, exact-height, and original-texture paint brushes. Every tool supports Round, Square, or Diamond footprints and Soft, Linear, or Hard edges; the Flat pad preset makes a hard square that stays level while it is raised or lowered. Painting updates the original packed cell grid and corner tags; the GPU combines full-resolution source textures using Wulfram's binary transition masks and nearest-neighbor texel sampling.
+- All 11 original skyboxes are selectable under Terrain, with Crossroads' Starset as the default. The selected sky survives autosave, undo/redo, Git source, and game ZIP export. New maps use the original `backface` checkerboard to mark unpainted terrain.
+- Event-driven 3D rendering with static shadow reuse, frame-coalesced pointer sampling, GPU terrain texture sampling, and independent terrain/texture/unit update paths.
+- Full keyboard camera control: `WASD` pans, arrow keys turn and tilt, `Q`/`E` or `+`/`-` zoom, and `Home` resets the view. Right-drag orbits and the mouse wheel zooms, with no artificial close-zoom limit.
+- Grayscale image import with a preview, explicit minimum/maximum heights, a signed midpoint height, midtone curve, and 0–6 spike-smoothing passes. Changing the midpoint shifts the entire range while retaining the height differences; a Below ground preset keeps imported terrain at or below the zero border. Image resampling remains nearest-pixel and smoothing can be disabled.
+- Base Builder mode with team placement, original models where shipped, rotation/position editing, Shift-drag pickup/movement, cargo subtypes, uplinks, and state-tagged supply starships. A margin slider controls the default terrain clearance for previews, new ground units, moved ground units, and templates. A translucent, terrain-conformed model ghost follows the cursor before placement; moved ground units retune their height and tilt continuously against terrain, while new starships spawn at the deduplicated shipped-state median Z of `2574.066650390625` and then move only in X/Y with altitude and orientation locked. Select a placed ground model and hold `Ctrl` to reveal standard 3D handles, switching between free XYZ translation and local pitch/roll/yaw rotation.
+- Startup opens Base Builder with no unit or template selected, ready for map exploration.
+- A template library with 73 powered formations extracted across 19 shipped maps plus a curated “Base in a Box” starter kit, all with live 2D top-down previews. Whole bases can be remapped to Team 1, Team 2, or capturable Neutral, rotated, footprint-scaled, auto-fit inside map bounds, and terrain-conformed unit by unit.
+- Every surviving ground model—including pads, turrets, power cells, skypumps, uplinks, darklights, and cargo—fits a plane across its rendered bounds, includes covered terrain-grid peaks, inherits slope pitch/roll, and defaults to a 0.25-unit margin under the complete model underside. Supply starships instead use their fixed airborne spawn altitude.
+- The build catalog and template placer are asset-authoritative: removed unit types and their now-undeployable cargo variants cannot be newly placed, while legacy map rows remain importable for lossless editing.
+- Placement validation for bounds, slope, spacing, ground height, power coverage, primary-cell overlap, and backup-cell areas. Every state also requires both teams to have an uplink and at least one repair pad inside same-team power range.
+- Original `land`, `state`, `tagmap`, and `tagmap2` import/export, with the chosen sky written to `start_script`.
+- Multiple named base-layout states per terrain, each with arbitrary user `key=value` metadata. Individual `wulfram-base-layout` JSON and complete `wulfram-base-layout-collection` JSON are included in every map ZIP with an editor project backup.
+- Canonical Git source import/export using `map.json`, `terrain.tsv`, `entities.jsonl`, `base-layouts.json`, and the two tag maps. Optional string-only map metadata keeps terrain-wide generator provenance without changing older maps. All 47 shipped maps are available in [`blackwatergaming/wulfram-maps`](https://github.com/blackwatergaming/wulfram-maps).
+- Repository dropdown/load/save/publish controls backed by a loopback-only local service in browser mode and a native bridge in the desktop app. Base Builder saves only layout state; Terrain Editor saves only terrain/map files, so either side can be reviewed without rewriting the other. A setup wizard diagnoses Git/GitHub/checkout issues, manages branches, and publishes commits through pull requests into `main`.
+- A self-contained Windows x64 Edge WebView2 app with per-monitor DPI handling, responsive high-DPI controls, and embedded editor/assets. See [the desktop release guide](docs/DESKTOP_RELEASE.md).
+
+Download [Wulfram Forge v0.6.0](https://github.com/blackwatergaming/wulfram-mapeditor/releases/tag/v0.6.0), extract the ZIP, and run `WulframForge/WulframForge.exe`. Node.js and a local web server are not required for the desktop build.
+
+The built-in Crossroads sample is read directly from the shipped map data. Gun and flak placement defaults come from robust statistics over 390 shipped turret records. The original client’s placement routines and checkerboard triangle interpolation were checked in Ghidra: rotations are radians, median gun/flak ground offsets are 16.420/15.847 world units, and power thresholds use `backupRadius - 10`, `2 × serviceRadius + 10`, and `serviceRadius - 10`. Power radii are server-supplied at runtime, so the editor exposes and stores them rather than pretending they are executable constants.
+
+## Product roadmap
+
+Manual district editing: [Base Workshop v13](docs/BASE_WORKSHOP_V13.md).
+Mirroring and district updates: [Base Workshop v14](docs/BASE_WORKSHOP_V14.md).
+Reusable districts: [District modules v15](docs/DISTRICT_MODULES_V15.md).
+Protecting authored groups: [District locks v16](docs/DISTRICT_LOCKS_V16.md).
+Rows, columns and spacing: [District alignment v17](docs/DISTRICT_ALIGNMENT_V17.md).
+Authored boundaries and reserved space: [Build areas v18](docs/BUILD_AREAS_V18.md).
+Bent connection reservations: [Authored corridors v19](docs/AUTHORED_CORRIDORS_V19.md).
+Inspect and follow saved paths: [Corridor inspection v20](docs/CORRIDOR_INSPECTION_V20.md).
+
+Preserve hand-built ridges and sites: [Protected terrain heights v21](docs/PROTECTED_TERRAIN_V21.md).
+
+Saved-base portability and management: [v12 guide](docs/PORTABLE_BASE_LIBRARY_V12.md).
+
+Visual base library: [v11 catalog and placement guide](docs/BASE_LIBRARY_V11.md).
+
+Start here: [Map-making guide](docs/MAP_MAKING_GUIDE.md). Current build evidence: [product acceptance matrix](docs/PRODUCT_ACCEPTANCE_MATRIX.md). The [v10 navigation sprint](docs/PRODUCT_SPRINT_R0_R1_V10.md) is historical.
+
+See the [whole-editor roadmap](docs/EDITOR_PRODUCT_ROADMAP.md) for the current feature inventory,
+usability work, manual and randomized map workflows, and staged acceptance criteria.
+The [base library and designer plan](docs/BASE_LIBRARY_AND_DESIGNER_PLAN.md) describes the proposed
+searchable catalog, district editing, and expansion from 15 to 48 distinct creative families.
+These documents distinguish existing features from planned work and editor checks from game evidence.
+
+## Run locally
+
+```bash
+npm install
+npm run dev
+```
+
+Open `http://localhost:3000`.
+
+`npm run dev` also starts the maps service on `127.0.0.1:4319`. Put a `wulfram-maps` checkout beside this repository to populate the editor's repository dropdown. Run `npm run maps:doctor` or open the editor's repository setup button for detailed service, checkout, Git, GitHub authentication, remote, and branch diagnostics.
+
+Verification:
+
+```bash
+npm run lint
+npm test
+npm run verify:formats
+npm run build
+```
+
+To reproduce the browser interaction smoke test, start Chrome with remote debugging
+on port `9223`, open the local editor, then run
+`node tools/smoke-balanced-ui.mjs`. The script verifies generation, gate display,
+selection, and apply, and writes before/after screenshots under `artifacts/` by
+default.
+
+`npm test` discovers every original map under `../wulfram-debug/data/maps` (or `WULFRAM_MAPS_DIR`), then runs each through the actual editor writers and ZIP packager. It reloads the generated files and compares terrain dimensions, every height and texture index, tag maps, every original state as a separate base layout, unit order/types, cargo subtypes, teams, positions, rotations, active flags, metadata, JSON layouts, and browser backup. It also matches all extracted template units back to their source state rows, tests brush footprints/hard height stamps, model-bounds terrain fitting, grayscale shaping/smoothing, normalized texture blending, 3D-transform coordinate conversion, scoped repository writes, and the branch/commit/push/PR lifecycle against temporary Git remotes. The checked-in Crossroads map is used as a portable fallback when the sibling asset tree is unavailable.
+
+## Asset extraction
+
+Browser-ready assets are checked in so the editor deploys independently. To regenerate them from a sibling checkout:
+
+```bash
+python tools/extract_wulfram_assets.py
+# Or supply another installation and regenerate only rendering assets:
+python tools/extract_wulfram_assets.py --source ../wulfram-test-run/retail-baseline --textures-only
+```
+
+The extractor defaults to `../wulfram-debug` and accepts `--source` for another installation. It reads `data/bitmaps/landscape.zip`, `base.zip`, `skies.zip`, `data/shapes.zip`, the palette, and shipped maps. It reads the full-resolution level after the smaller mip levels, preserves the original sky tile order/rotation, and performs the original 16.16 fixed-point shape conversion. See [the rendering notes](docs/TEXTURE_RENDERING.md) for the Ghidra evidence and GPU checks.
+
+Some entity shape names referenced by the executable—heavy silo, shield, portal, and spy bug—are absent from the shipped shape archive. Legacy rows remain readable for lossless round trips, but removed types are never offered for new unit or template placement. Available units render their original models, repeating UVs, and neutral/red/blue per-face material selection. Power cells use the archive's blue `energy_1` and red `energy_2` meshes. Missing neutral cargo bitmaps and materials without neutral variants use a desaturated rendering fallback; supplied neutral bitmaps keep their original colors.
+
+## Map source and releases
+
+The reviewable source format is documented in [docs/MAP_SOURCE_FORMAT.md](docs/MAP_SOURCE_FORMAT.md). Compiled game ZIPs stay out of Git and are published from a clean `wulfram-maps` checkout:
+
+```bash
+npm run maps:branch -- maps/forge-balance-alpha --create
+npm run maps:generate -- forge-balance-alpha forge-balance-alpha-v1 three-route canyon003 curated-base-in-a-box
+npm run maps:compile -- --all
+npm run maps:release -- v1.0.0
+```
+
+`maps:generate` requires a non-`main` maps feature branch. It writes canonical
+source only after terrain, route, entity-pair, and normal Forge validation pass,
+then compiles the candidate and prints its SHA-256. It does not publish or label the
+candidate playtest-reviewed.
+
+The first imported-map artifact set is [wulfram-maps v0.1.0](https://github.com/blackwatergaming/wulfram-maps/releases/tag/v0.1.0), containing 47 individual packages, a collection archive, and SHA-256 checksums.
+
+The former ChatGPT Sites hosting manifest and plugin have been removed. Supported publication targets are the local server and GitHub Releases only.
+
+## New-server JSON
+
+See [docs/BASE_LAYOUT_FORMAT.md](docs/BASE_LAYOUT_FORMAT.md), the [individual-layout schema](public/schemas/wulfram-base-layout-v1.schema.json), and the [layout-collection schema](public/schemas/wulfram-base-layout-collection-v1.schema.json). Cargo units retain both `stateToken: "c"` and their original `cargoToken`, and all coordinates and rotations retain original Wulfram semantics.

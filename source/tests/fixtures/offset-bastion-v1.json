@@ -1,0 +1,26 @@
+{
+  "version": "offset-bastion-v1",
+  "seed": "offset-review-0",
+  "cases": [
+    {
+      "size": "small",
+      "count": 12,
+      "layoutHash": "c0bf7290b3fa19f33972e50cd80422fdffc03d44283fe253b9f3630cb59015ea"
+    },
+    {
+      "size": "standard",
+      "count": 19,
+      "layoutHash": "f8f64ae91a8fdd7456caa3a3e597f3b4871423b590ec41d879dc2299381eba97"
+    },
+    {
+      "size": "large",
+      "count": 26,
+      "layoutHash": "72bdf8e5b11186d4068002956969ed14736ce00f8afe096ba2315138d074afb9"
+    },
+    {
+      "size": "massive",
+      "count": 33,
+      "layoutHash": "aa36200029d03f7fae57f80847cb01239d2973df350012b4f05acac1fb81d530"
+    }
+  ]
+}

@@ -1,0 +1,309 @@
+# Balanced map generator contract
+
+Status: implementation contract for `editor/balanced-map-generator`.
+
+## Claim boundary
+
+Forge may label a generated candidate **strict-symmetry validated** only when every
+hard gate in this document passes. That label means the canonical terrain and team
+layout are rotationally paired and satisfy the configured offline traversability
+model. It does not claim a statistically proven live win rate.
+
+A map may be labeled **playtest reviewed** only when its exact generator version,
+seed, source revision, package checksum, and side-swapped playtest record are linked.
+
+## Current editor workflow
+
+The feature branch currently exposes a **Balanced** action in the Forge header:
+
+1. Enter a map name and reproducible text seed. **Randomize seed** creates a new
+   seed; **Copy seed** copies the trimmed input for sharing. Normal text selection
+   and paste also work. Candidate results retain their original seed, displayed
+   above the gate report, even if you change the input before generating again.
+   Grid size accepts odd vertex counts from 17 through 513. World width and height
+   can differ and must be positive. Defaults remain 129 vertices per side and
+   5,600 world units on each axis. The candidate report retains its generated
+   dimensions after inputs change. Custom dimensions still require passing gates;
+   a larger grid costs more time and memory, and a small world may not fit a base.
+2. Choose a base template, original terrain texture theme, and relief.
+3. Select **Generate three** to build the open-field, three-route, and ring-center
+   candidates from the same seed. Progress appears between candidates; **Stop and
+   close** invalidates the active batch without changing the project or repository.
+4. Compare each candidate's accessible isometric terrain-relief preview, base and
+   objective markers, slope-proxy coverage, connected cleared terrain, reachable
+   high ground, separated route counts, map errors, and full gate list. Failed
+   candidates remain visible but cannot be applied.
+5. Select a passing candidate and choose **Apply passing candidate**. The prior map
+   becomes one undoable history entry; canceling the dialog changes nothing.
+
+The curated Base in a Box is the default. If a selected template does not contain an
+uplink, project generation adds one terrain-conformed uplink per team at exact
+rotationally paired positions. The completed project must still pass normal Forge
+validation; infrastructure errors cannot be hidden by the balance score.
+
+Current implementation limits are deliberate: candidate previews are lightweight
+isometric terrain reliefs rather than three independent interactive WebGL scenes,
+the center objective is an analysis region rather than a placed gameplay entity,
+route clearance uses a conservative grid-erosion proxy rather than verified vehicle
+footprints, and no generated map has yet passed live side-swapped playtesting.
+
+The route gate reports the sampled clearance radius separately for X and Y in
+world units. It is computed as the vertex radius multiplied by each axis's grid
+spacing. For width 5600, one vertex spans 87.5 units at grid size 65, 43.75 at
+129, and 10.9375 at 513. Unequal world axes give unequal physical extents. These
+sampled extents expose the proxy's scale; they do not prove continuous collision
+clearance or replace calibration against vehicle footprints.
+
+## Versioned first-release profile
+
+Profile ID: `strict-rotational-v1`
+
+| Setting | Initial value | Basis |
+| --- | ---: | --- |
+| Terrain vertices | 129 × 129 | All 47 canonical maps |
+| World size | 5,600 × 5,600 | All 47 canonical maps |
+| Symmetry | 180-degree rotation | Exact two-team parity without reflection handedness |
+| Standard relief reference | 524 world units | Corpus median elevation range |
+| Target slope-passable fraction | 0.70 | Corpus median at the provisional 22-degree proxy |
+| Provisional minimum slope-passable fraction | 0.58 | Corpus P25; must not replace route gates |
+| Base separation reference | 0.46 of world diagonal | Corpus median team-centroid separation |
+| Minimum standard routes | 2 | First-release design requirement |
+| Minimum route-clearance radius | 1 terrain vertex | Reject a route whose surrounding slope-passable cells are not clear |
+| Maximum base-anchor snap | 3 terrain vertices | Prevent a blocked or invalid base from snapping across the map |
+| Minimum reachable cleared terrain | 0.70 | Reject substantial disconnected playable regions |
+| Minimum reachable high ground | 0.50 | Reject isolated strategic elevation while the live movement model remains provisional |
+
+Slope/passability values are explicitly configurable and provisional until the game
+team verifies the ground-movement contract. Forge’s current 22-degree value is an
+object-placement validation setting, not confirmed live vehicle navigation law.
+
+## Deterministic input
+
+The complete generation identity is:
+
+```text
+generator version + profile ID + seed + dimensions + world size
++ topology + relief + texture family + base template + objective mode
+```
+
+The same complete identity must produce byte-identical canonical terrain and paired
+entity data. Fresh generation defaults to the stable timestamp
+`2000-01-01T00:00:00.000Z`, so repeated calls with the same project name also produce
+identical complete canonical source. Callers may explicitly supply an editorial
+timestamp; normal editor saves continue to record actual edit times. Explicit
+timestamps and project names must also match when comparing entire source files.
+
+Seeds are normalized as UTF-8 text and hashed by a documented stable algorithm.
+Changing generator behavior requires a new generator version and retained regression
+fixtures for older versions.
+
+## Rotational invariants
+
+For a terrain vertex at `(x, y)`, its pair is:
+
+```text
+(width - 1 - x, height - 1 - y)
+```
+
+Paired vertices must have exactly equal height and texture ID after every generation,
+smoothing, carving, and serialization step. Edge pinning is reapplied before the
+final invariant check.
+
+For each Team 1 entity at `(x, y, z)` with yaw `r`, there must be a Team 2 entity with
+the same token, subtype, active state, and non-team metadata at:
+
+```text
+(worldWidth - x, worldHeight - y, paired terrain-conformed z)
+yaw = normalize(r + pi)
+```
+
+Pitch and roll must be recalculated from the paired terrain using the existing model
+clearance/snap behavior and then compared under the rotational transform. Supply
+starships retain their authored locked altitude/orientation rules.
+
+Center-neutral entities may be self-paired. Every other neutral strategic entity must
+have a rotational partner.
+
+## Terrain construction
+
+The generator builds terrain from named masks rather than unconstrained pixels:
+
+- Reserved flat team base pads
+- Intended strategic lanes
+- Ridges and walls
+- Valleys and bowls
+- Plateaus/high ground
+- Neutral objective zones
+- Low-frequency seeded variation
+- Zero-height outer boundary
+
+Only the independent rotational domain receives random decisions. Its paired domain
+is copied exactly. Any global filtering must operate on paired samples or be followed
+by an exact symmetry repair.
+
+The first release provides:
+
+- `open-field`: broad connected maneuver area with gentle cover/high-ground features
+- `three-route`: center and two flank approaches separated by deliberate ridges
+- `ring-center`: connected outer route plus contested center approaches
+
+## Offline traversal model
+
+Traversal is evaluated on the terrain grid with horizontal/vertical and diagonal
+neighbor edges. An edge is traversable when:
+
+- Both endpoint heights are finite.
+- Its grade does not exceed the configured movement slope.
+- Its surrounding clearance meets the configured footprint requirement.
+- It is not excluded by a reserved impassable mask.
+
+Edge cost is its three-dimensional segment length. Additional texture or combat costs
+must remain disabled unless an authoritative rule supports them.
+
+Base anchors must be finite, in bounds, rotationally paired, and resolve to a cleared
+grid vertex within three terrain vertices. Center/objective targets are regions, not
+a single fragile vertex, and their anchors must form a closed rotational set. Paths
+use deterministic shortest-path search with stable tie-breaking.
+
+For multiple required objective anchors, reachability is checked separately for
+every region from each team. Reaching one objective cannot hide an isolated one.
+Reports include each team's `reachableObjectiveCount`. The reported
+`objectiveCost` remains the cost to the nearest region; it is not a per-objective
+travel-time comparison.
+
+`objectiveCosts` lists each team's shortest-path cost for every supplied objective
+in input order (null when unreachable). `paired-region-cost` compares team 1's
+cost to each region against team 2's cost to its 180-degree counterpart, including
+the center's self-pair. The maximum relative delta must meet `pairedCostTolerance`;
+any missing cost fails this gate. This preserves legitimate home/away objectives
+while preventing equal nearest costs from hiding a farther mismatch. These are
+offline geometric path costs, not vehicle travel times or combat-balance proof.
+
+A second route counts as meaningfully distinct only when it clears the profile’s
+separation corridor from the first route for the required portion of its length.
+Merely stepping around one grid vertex does not count as a strategic alternative.
+
+## Hard gates
+
+A candidate is rejected when any of these are true:
+
+1. Terrain dimensions or arrays are inconsistent.
+2. A height/entity value is non-finite or out of bounds.
+3. Exact rotational terrain or team pairing fails.
+4. Existing Forge validation reports an error.
+5. Either base anchor or a required objective has no traversable representative.
+6. Either team cannot reach a required objective or the paired base conflict region.
+7. A paired route exists for only one team.
+8. A standard topology has fewer than two meaningfully distinct strategic routes.
+9. Reachable cleared terrain is below the configured hard floor.
+10. Reachable high ground is below the configured hard floor.
+11. Neutral strategic placement is not centered or rotationally paired.
+12. Canonical source or original-package round trip changes the candidate semantically.
+13. Repeating the complete generation identity changes deterministic content.
+
+Hard gates are evaluated before candidate ranking. No aggregate score can compensate
+for a failed hard gate.
+
+## Reported metrics
+
+The structured report contains:
+
+- Generator identity and source revision
+- Each hard gate and evidence
+- Terrain elevation, roughness, and slope distributions
+- Traversable and largest-connected-area fractions
+- Base-to-center, base-to-objective, and base-to-base costs
+- Route count, separation, and minimum clearance
+- Reachable high-ground area by team
+- Entity/type counts and power coverage by team
+- Neutral objective parity
+- Exact paired deltas
+- Candidate novelty descriptors
+- Explicit limitations of the offline model
+
+Ranking uses hard-gate-first lexicographic or Pareto/quality-diversity selection. The
+UI may show a concise summary but must retain the complete report for inspection and
+publication evidence.
+
+## Persistence
+
+Generator metadata is optional and backward-compatible. Canonical `map.json` stores
+the terrain-wide generator version, profile, seed, topology, parameter JSON, source
+revision, review status, and analysis report as sorted string metadata. The active
+base layout retains a duplicate for compatibility with existing layout consumers,
+but it is no longer the only provenance source.
+
+The editor and maps repositories both permit the optional string-only metadata object
+in their v1 schema. Older maps omit it without gaining an empty property, while
+parser, serializer, CLI, and round-trip tests preserve and validate it.
+
+## Required verification
+
+- Unit tests for seed normalization, PRNG stability, masks, transforms, and gates
+- Hand-verifiable traversal fixtures
+- Adversarial malformed-shape, anchor, one-lane-choke, disconnected-objective, and
+  isolated-high-ground fixtures
+- A seed-family corpus in which individual topology candidates may be rejected but
+  every retained family has at least one passing choice
+- Repeated-generation byte comparison
+- 47-map compatibility round trips
+- Base-template placement regression coverage
+- Browser build and interaction tests
+- Headed WebView2 generation/apply/undo/save/reload probe
+- Repository write-scope and branch-publication tests
+- Side-swapped playtesting for the first published generated map
+- Public artifact checksum verification and clean-install smoke test
+
+## Adjustable layout controls
+
+The dialog can generate one selected preset or compare all three. **Keep seed &
+regenerate** preserves the seed; Randomize seed remains a separate explicit action.
+Edited controls affect the next generation, not an already reviewed candidate.
+The candidate identity displays the settings used to create that candidate.
+
+**Randomize all settings** chooses a new seed, one topology, separation, route
+width, center size, relief, grid resolution, both world dimensions, an available
+starter base, and an available theme. The map name is preserved. It clears old
+candidate previews and does not automatically generate or apply a map. Review the
+settings, then regenerate. Numeric layout ranges match the controls; random grid
+sizes are33/65/129/257 and world axes range3200–8000 in100-unit steps to avoid
+accidentally selecting the most expensive resolution or unbounded world sizes.
+Randomization is not a guarantee of passing fairness or template-fit checks.
+
+- Base separation: 30–65% of the world-space map diagonal (default46%). Both base
+  anchors move symmetrically; pad centers and connecting routes move with them.
+- Route width: 0.5–1.75 times the default reserved corridor width (default1).
+  This scales the flattening corridor and its transition, not verified vehicle
+  clearance or a promise that every requested route is passable.
+- Central-area diameter: 0.5–2.5 times the default center flattening diameter
+  (default1). On rectangular maps the normalized region is an ellipse in world
+  coordinates. It does not place a gameplay objective entity.
+
+These values are recorded in generator identity and `generator.parameters`.
+Missing parameters retain the original defaults, with the same seeded noise and
+terrain output. Changing them never changes the analysis thresholds. Incompatible
+settings can fail the existing gates and cannot be applied as a passing candidate.
+
+## Full-corpus verification
+
+For read-only compatibility validation of the complete saved canonical corpus, run
+`npm run verify:repository-roundtrips -- <maps-checkout-path>`. Omitting the path
+uses the configured/sibling maps checkout. This checks all parsed project fields,
+canonical writer stability, compiled contents, deterministic ZIP bytes, and actual
+ZIP extraction. Its receipt includes map/layout/vertex counts and a source-content
+hash. An empty corpus fails. This does not replace tests against independent
+original-game files; the normal test suite may fall back to bundled Crossroads
+when those originals are unavailable.
+
+An optional second argument supplies the required map count; a mismatch fails.
+Editor CI checks all 47 canonical maps at pinned maps commit
+`4e24f1696258d90c12c2bcd3f7fe660b6b528fe8`. It only reads that repository and
+does not publish anything. The private generated candidate is checked separately
+against the local/private maps checkout; it is not added to the public fixture.
+
+## Use of AI-generated imagery
+
+AI imagery may be imported as an optional aesthetic mask only after the deterministic
+generator has established base pads, routes, objectives, bounds, and symmetry. The
+result must still pass every hard gate. An AI image, screenshot, or visual impression
+is never balance evidence.
